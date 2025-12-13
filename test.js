@@ -7,17 +7,19 @@ import {
   toString,
   toJSON,
   fromJSON,
+  toCompressed,
+  fromCompressed,
   Bytes,
 } from "./src/index.js";
 
-function runTest(name, fn) {
+async function runTest(name, fn) {
   console.time(name);
-  fn();
+  await fn();
   console.timeEnd(name);
   console.log(`✔ ${name}`);
 }
 
-function testBase64() {
+async function testBase64() {
   const payload = randomBytes(32);
   const encoded = toBase64UrlString(payload);
   const decoded = fromBase64UrlString(encoded);
@@ -31,7 +33,7 @@ function testBase64() {
   console.log("base64 hello bytes:", [...helloBytes]);
 }
 
-function testStrings() {
+async function testStrings() {
   const text = "héllo ✓ rocket 🚀";
   const bytes = fromString(text);
   assert.equal(toString(bytes), text);
@@ -39,7 +41,7 @@ function testStrings() {
   console.log("strings byte length:", bytes.byteLength);
 }
 
-function testJSON() {
+async function testJSON() {
   const value = { ok: true, count: 3, nested: ["x", { y: 1 }], nil: null };
   const jsonBytes = fromJSON(value);
   assert.ok(jsonBytes instanceof Uint8Array);
@@ -52,7 +54,16 @@ function testJSON() {
   console.log("json bytes length:", jsonBytes.byteLength);
 }
 
-function testBytesWrapper() {
+async function testCompression() {
+  const payload = fromString("compress me, please!");
+  const compressed = await toCompressed(payload);
+  const restored = await fromCompressed(compressed);
+  assert.deepStrictEqual(Buffer.from(restored), Buffer.from(payload));
+  console.log("compression original length:", payload.byteLength);
+  console.log("compression compressed length:", compressed.byteLength);
+}
+
+async function testBytesWrapper() {
   const payload = Uint8Array.from([1, 2, 3, 4]);
   const encoded = Bytes.toBase64UrlString(payload);
   assert.deepStrictEqual(Bytes.fromBase64UrlString(encoded), payload);
@@ -64,17 +75,24 @@ function testBytesWrapper() {
   const jsonBytes = Bytes.fromJSON(value);
   assert.ok(jsonBytes instanceof Uint8Array);
   assert.deepStrictEqual(Bytes.toJSON(jsonBytes), value);
+
+  const compressed = await Bytes.toCompressed(payload);
+  const restored = await Bytes.fromCompressed(compressed);
+  assert.deepStrictEqual(Buffer.from(restored), Buffer.from(payload));
+
   console.log("bytes wrapper encoded:", encoded);
   console.log("bytes wrapper json bytes length:", jsonBytes.byteLength);
+  console.log("bytes wrapper compressed length:", compressed.byteLength);
 }
 
-function main() {
+async function main() {
   console.log("Running bytecodec tests...");
   console.time("total");
-  runTest("base64", testBase64);
-  runTest("strings", testStrings);
-  runTest("json", testJSON);
-  runTest("bytes-wrapper", testBytesWrapper);
+  await runTest("base64", testBase64);
+  await runTest("strings", testStrings);
+  await runTest("json", testJSON);
+  await runTest("compression", testCompression);
+  await runTest("bytes-wrapper", testBytesWrapper);
   console.timeEnd("total");
   console.log("All tests passed ✅");
 }

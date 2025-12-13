@@ -20,6 +20,10 @@ export function toJSON(input: ByteSource | string): any;
 
 export function fromJSON(value: any): Uint8Array;
 
+export function toCompressed(bytes: ByteSource): Promise<Uint8Array>;
+
+export function fromCompressed(bytes: ByteSource): Promise<Uint8Array>;
+
 export declare class Bytes {
   static toBase64UrlString(bytes: ByteSource): Base64URLString;
   static fromBase64UrlString(base64UrlString: Base64URLString): Uint8Array;
@@ -27,4 +31,6 @@ export declare class Bytes {
   static toString(bytes: ByteSource): string;
   static toJSON(input: ByteSource | string): any;
   static fromJSON(value: any): Uint8Array;
+  static toCompressed(bytes: ByteSource): Promise<Uint8Array>;
+  static fromCompressed(bytes: ByteSource): Promise<Uint8Array>;
 }

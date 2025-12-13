@@ -4,6 +4,8 @@ import { fromString } from "./fromString/index.js";
 import { toString } from "./toString/index.js";
 import { fromJSON } from "./fromJSON/index.js";
 import { toJSON } from "./toJSON/index.js";
+import { toCompressed } from "./toCompressed/index.js";
+import { fromCompressed } from "./fromCompressed/index.js";
 
 export {
   fromBase64UrlString,
@@ -12,6 +14,8 @@ export {
   toString,
   fromJSON,
   toJSON,
+  toCompressed,
+  fromCompressed,
 };
 
 /**
@@ -70,5 +74,23 @@ export class Bytes {
    */
   static fromJSON(value) {
     return fromJSON(value);
+  }
+
+  /**
+   * Gzip-compress bytes. Returns a Uint8Array in a Promise.
+   * @param {import("./index.d.ts").ByteSource} bytes
+   * @returns {Promise<Uint8Array>}
+   */
+  static toCompressed(bytes) {
+    return toCompressed(bytes);
+  }
+
+  /**
+   * Gzip-decompress bytes. Returns a Uint8Array in a Promise.
+   * @param {import("./index.d.ts").ByteSource} bytes
+   * @returns {Promise<Uint8Array>}
+   */
+  static fromCompressed(bytes) {
+    return fromCompressed(bytes);
   }
 }

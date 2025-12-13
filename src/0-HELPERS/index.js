@@ -18,3 +18,11 @@ export const textEncoder =
 
 export const textDecoder =
   typeof TextDecoder !== "undefined" ? new TextDecoder() : null;
+
+/**
+ * Detect Node runtime.
+ * @returns {boolean}
+ */
+export function isNodeRuntime() {
+  return typeof process !== "undefined" && !!process.versions?.node;
+}
