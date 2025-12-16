@@ -26,6 +26,10 @@ export function fromCompressed(bytes: ByteSource): Promise<Uint8Array>;
 
 export function concat(sources: ByteSource[]): Uint8Array;
 
+export function generateNonce(): Base64URLString;
+
+export function equals(a: ByteSource, b: ByteSource): boolean;
+
 export declare class Bytes {
   static toBase64UrlString(bytes: ByteSource): Base64URLString;
   static fromBase64UrlString(base64UrlString: Base64URLString): Uint8Array;
@@ -36,4 +40,5 @@ export declare class Bytes {
   static toCompressed(bytes: ByteSource): Promise<Uint8Array>;
   static fromCompressed(bytes: ByteSource): Promise<Uint8Array>;
   static concat(sources: ByteSource[]): Uint8Array;
+  static equals(a: ByteSource, b: ByteSource): boolean;
 }

@@ -10,6 +10,8 @@ import {
   toCompressed,
   fromCompressed,
   concat,
+  generateNonce,
+  equals,
   Bytes,
 } from "./src/index.js";
 
@@ -80,6 +82,37 @@ async function testConcat() {
   console.log("concat merged length:", merged.byteLength);
 }
 
+async function testEquals() {
+  const left = Uint8Array.from([1, 2, 3, 4]);
+  const same = new Uint8Array(left);
+  const numberArray = [1, 2, 3, 4];
+  const buffer = new Uint8Array([1, 2, 3, 4]).buffer;
+  const view = new DataView(new Uint8Array([0, 1, 2, 3, 9]).buffer, 1, 4); // 1,2,3,9
+
+  assert.equal(equals(left, same), true);
+  assert.equal(equals(left, numberArray), true);
+  assert.equal(equals(left, buffer), true);
+  assert.equal(equals(left, view), false);
+  assert.equal(equals(left, [1, 2, 3, 5]), false);
+  assert.throws(() => equals("oops", left), /Expected/);
+  assert.equal(Bytes.equals(left, numberArray), true);
+
+  console.log("equals sample:", equals(left, numberArray));
+}
+
+async function testNonce() {
+  const nonceA = generateNonce();
+  const nonceB = generateNonce();
+
+  assert.equal(typeof nonceA, "string");
+  assert.equal(nonceA.length, 43);
+  assert.match(nonceA, /^[A-Za-z0-9_-]+$/);
+  assert.notEqual(nonceA, nonceB);
+  assert.equal(fromBase64UrlString(nonceA).byteLength, 32);
+
+  console.log("nonce sample:", nonceA);
+}
+
 async function testBytesWrapper() {
   const payload = Uint8Array.from([1, 2, 3, 4]);
   const encoded = Bytes.toBase64UrlString(payload);
@@ -113,6 +146,8 @@ async function main() {
   await runTest("json", testJSON);
   await runTest("compression", testCompression);
   await runTest("concat", testConcat);
+  await runTest("equals", testEquals);
+  await runTest("nonce", testNonce);
   await runTest("bytes-wrapper", testBytesWrapper);
   console.timeEnd("total");
   console.log("All tests passed ✅");

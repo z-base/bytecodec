@@ -1,7 +1,7 @@
 {
   "name": "bytecodec",
-  "version": "1.2.1",
-  "description": "Zero-dependency byte toolkit for base64url, UTF-8 strings, and JSON in browser and Node runtimes.",
+  "version": "1.4.0",
+  "description": "Zero-dependency byte toolkit for base64url, UTF-8 strings, JSON, CSP-ready nonces, and timing-safe equality in browser and Node runtimes.",
   "keywords": [
     "base64url",
     "base64",
@@ -12,7 +12,11 @@
     "browser",
     "node",
     "utf8",
-    "json"
+    "json",
+    "nonce",
+    "csp",
+    "equals",
+    "timing-safe"
   ],
   "license": "MIT",
   "type": "module",

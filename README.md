@@ -7,6 +7,8 @@ Zero-dependency byte utilities for base64url, UTF-8 strings, and JSON that behav
 - URL-safe base64 without padding; no external deps or bundler shims.
 - UTF-8 encode/decode for `Uint8Array`, `ArrayBuffer`, `ArrayBufferView`, or `number[]`.
 - JSON helpers (JSON.stringify/parse + UTF-8) for payloads, tokens, and storage.
+- Constant-time `equals()` for any supported byte input.
+- `generateNonce()` helper for CSP headers, state parameters, and other integrity tokens (returns base64url).
 - ESM-first, tree-shakeable, bundled TypeScript definitions, side-effect free.
 
 ## Install
@@ -32,6 +34,8 @@ import {
   toCompressed, // gzip: bytes -> bytes (Promise)
   fromCompressed, // gzip: bytes -> bytes (Promise)
   concat, // join multiple byte sources
+  equals, // constant-time compare for any ByteSource
+  generateNonce, // 32 random bytes as base64url
   Bytes, // optional class wrapper
 } from "bytecodec";
 
@@ -56,6 +60,12 @@ const restored = await fromCompressed(compressed);
 // Concatenate
 const joined = concat([textBytes, [33, 34]]); // Uint8Array [..textBytes, 33, 34]
 
+// Constant-time compare
+const isSame = equals(joined, concat([textBytes, [33, 34]])); // true
+
+// Nonce (separate helper; base64url string is easiest to store/compare/transport)
+const nonce = generateNonce(); // e.g. "Pi4xkVRsUUTqlV5Av8IYhlB3WfACjh9zdLe5KHF1mzE"
+
 // Wrapper mirrors the same methods (value -> bytes via fromJSON, bytes -> value via toJSON)
 Bytes.toBase64UrlString(payload);
 Bytes.fromBase64UrlString(encoded);
@@ -66,20 +76,23 @@ Bytes.toJSON(jsonBytes); // or Bytes.toJSON('{"ok":true}')
 await Bytes.toCompressed(payload);
 await Bytes.fromCompressed(compressed);
 Bytes.concat([payload, [1, 2, 3]]);
+Bytes.equals(payload, Uint8Array.from(payload));
 ```
 
 ## API snapshot
 
-- `toBase64UrlString(bytes: ByteSource): Base64URLString` – RFC 4648 base64url encoding (no padding).
-- `fromBase64UrlString(base64UrlString: Base64URLString): Uint8Array` – decode with length validation.
-- `fromString(text: string): Uint8Array` – UTF-8 encode.
+- `toBase64UrlString(bytes: ByteSource): Base64URLString` - RFC 4648 base64url encoding (no padding).
+- `fromBase64UrlString(base64UrlString: Base64URLString): Uint8Array` - decode with length validation.
+- `fromString(text: string): Uint8Array` - UTF-8 encode.
 - `toString(bytes: ByteSource): string` - UTF-8 decode.
 - `toJSON(input: ByteSource | string): any` - UTF-8 decode + `JSON.parse` (bytes or JSON string -> value).
 - `fromJSON(value: any): Uint8Array` - `JSON.stringify` + UTF-8 encode (value -> bytes).
 - `toCompressed(bytes: ByteSource): Promise<Uint8Array>` - gzip compress bytes (Node zlib or browser CompressionStream).
 - `fromCompressed(bytes: ByteSource): Promise<Uint8Array>` - gzip decompress bytes (Node zlib or browser DecompressionStream).
 - `concat(sources: ByteSource[]): Uint8Array` - normalize and join multiple byte sources into one Uint8Array.
-- `Bytes` - class wrapper exposing the same static methods above.
+- `equals(a: ByteSource, b: ByteSource): boolean` - timing-safe equality check for any supported byte inputs.
+- `generateNonce(): Base64URLString` - 32 random bytes encoded as base64url; ready for CSP headers, OAuth state, CSRF tokens, or any transport/storage-friendly nonce.
+- `Bytes` - class wrapper exposing the same static methods above (including `equals`; `generateNonce` stays a standalone helper).
 
 ### Types
 

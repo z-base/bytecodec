@@ -7,6 +7,8 @@ import { toJSON } from "./toJSON/index.js";
 import { toCompressed } from "./toCompressed/index.js";
 import { fromCompressed } from "./fromCompressed/index.js";
 import { concat } from "./concat/index.js";
+import { generateNonce } from "./nonce/index.js";
+import { equals } from "./equals/index.js";
 
 export {
   fromBase64UrlString,
@@ -18,6 +20,8 @@ export {
   toCompressed,
   fromCompressed,
   concat,
+  generateNonce,
+  equals,
 };
 
 /**
@@ -95,6 +99,7 @@ export class Bytes {
   static fromCompressed(bytes) {
     return fromCompressed(bytes);
   }
+
   /**
    * Combines ByteSources into one ByteSource / Byte array
    * @param {import("./index.d.ts").ByteSource[]} sources
@@ -102,5 +107,15 @@ export class Bytes {
    */
   static concat(sources) {
     return concat(sources);
+  }
+
+  /**
+   * Constant-time compare for two ByteSources.
+   * @param {import("./index.d.ts").ByteSource} a
+   * @param {import("./index.d.ts").ByteSource} b
+   * @returns {boolean}
+   */
+  static equals(a, b) {
+    return equals(a, b);
   }
 }
