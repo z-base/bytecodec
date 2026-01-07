@@ -8,6 +8,7 @@ Zero-dependency byte utilities for base64url, UTF-8 strings, JSON, and BufferSou
 - UTF-8 encode/decode for `Uint8Array`, `ArrayBuffer`, `ArrayBufferView`, or `number[]`.
 - JSON helpers (JSON.stringify/parse + UTF-8) for payloads, tokens, and storage.
 - BufferSource helper that returns a Uint8Array view (zero-copy for ArrayBuffer-backed inputs).
+- Explicit `normalizeToUint8Array()` helper for ByteSource -> Uint8Array normalization.
 - Built on ES2015 typed arrays (Uint8Array/ArrayBuffer), widely available since 2015 across modern browsers; Node >=18 supported.
 - Constant-time `equals()` for any supported byte input.
 - `generateNonce()` helper for CSP headers, state parameters, and other integrity tokens (returns base64url).
@@ -37,6 +38,7 @@ import {
   fromCompressed, // gzip: bytes -> bytes (Promise)
   concat, // join multiple byte sources
   toBufferSource, // ByteSource -> BufferSource (Uint8Array view)
+  normalizeToUint8Array, // ByteSource -> Uint8Array view
   equals, // constant-time compare for any ByteSource
   generateNonce, // 32 random bytes as base64url
   Bytes, // optional class wrapper
@@ -67,6 +69,9 @@ const joined = concat([textBytes, [33, 34]]); // Uint8Array [..textBytes, 33, 34
 const view = payload.subarray(1, 4);
 const bufferSource = toBufferSource(view); // Uint8Array view (shared buffer)
 
+// Normalize to Uint8Array
+const normalized = normalizeToUint8Array([1, 2, 3]); // Uint8Array [1, 2, 3]
+
 // Constant-time compare
 const isSame = equals(joined, concat([textBytes, [33, 34]])); // true
 
@@ -84,6 +89,7 @@ await Bytes.toCompressed(payload);
 await Bytes.fromCompressed(compressed);
 Bytes.concat([payload, [1, 2, 3]]);
 Bytes.toBufferSource(payload);
+Bytes.toUint8Array(payload);
 Bytes.equals(payload, Uint8Array.from(payload));
 ```
 
@@ -98,10 +104,11 @@ Bytes.equals(payload, Uint8Array.from(payload));
 - `toCompressed(bytes: ByteSource): Promise<Uint8Array>` - gzip compress bytes (Node zlib or browser CompressionStream).
 - `fromCompressed(bytes: ByteSource): Promise<Uint8Array>` - gzip decompress bytes (Node zlib or browser DecompressionStream).
 - `concat(sources: ByteSource[]): Uint8Array` - normalize and join multiple byte sources into one Uint8Array.
+- `normalizeToUint8Array(bytes: ByteSource): Uint8Array` - normalize to a Uint8Array view (zero-copy for ArrayBuffer-backed inputs).
 - `toBufferSource(bytes: ByteSource): BufferSource` - normalize to a Uint8Array view (zero-copy for ArrayBuffer-backed inputs).
 - `equals(a: ByteSource, b: ByteSource): boolean` - timing-safe equality check for any supported byte inputs.
 - `generateNonce(): Base64URLString` - 32 random bytes encoded as base64url; ready for CSP headers, OAuth state, CSRF tokens, or any transport/storage-friendly nonce.
-- `Bytes` - class wrapper exposing the same static methods above (including `toBufferSource` and `equals`; `generateNonce` stays a standalone helper).
+- `Bytes` - class wrapper exposing the same static methods above (with `normalizeToUint8Array` exposed as `toUint8Array`; `generateNonce` stays a standalone helper).
 
 ### Types
 

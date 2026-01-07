@@ -1,7 +1,7 @@
 {
   "name": "bytecodec",
-  "version": "2.0.0",
-  "description": "Zero-dependency byte toolkit for base64url, UTF-8 strings, JSON, BufferSource helpers, CSP-ready nonces, gzip, and timing-safe equality in browser and Node runtimes.",
+  "version": "2.1.0",
+  "description": "Zero-dependency byte toolkit for base64url, UTF-8 strings, JSON, ByteSource normalization, BufferSource helpers, CSP-ready nonces, gzip, and timing-safe equality in browser and Node runtimes.",
   "keywords": [
     "base64url",
     "base64",

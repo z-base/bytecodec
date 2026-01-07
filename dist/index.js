@@ -10,7 +10,8 @@ import { concat } from "./concat/index.js";
 import { generateNonce } from "./nonce/index.js";
 import { equals } from "./equals/index.js";
 import { toBufferSource } from "./toBufferSource/index.js";
-export { fromBase64UrlString, toBase64UrlString, fromString, toString, fromJSON, toJSON, toCompressed, fromCompressed, concat, generateNonce, toBufferSource, equals, };
+import { normalizeToUint8Array } from "./0-HELPERS/index.js";
+export { fromBase64UrlString, toBase64UrlString, fromString, toString, fromJSON, toJSON, toCompressed, fromCompressed, concat, generateNonce, toBufferSource, equals, normalizeToUint8Array, };
 /**
  * Convenience wrapper around the codec functions.
  */
@@ -47,5 +48,8 @@ export class Bytes {
     }
     static toBufferSource(bytes) {
         return toBufferSource(bytes);
+    }
+    static toUint8Array(bytes) {
+        return normalizeToUint8Array(bytes);
     }
 }

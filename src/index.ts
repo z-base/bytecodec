@@ -10,6 +10,7 @@ import { concat } from "./concat/index.js";
 import { generateNonce } from "./nonce/index.js";
 import { equals } from "./equals/index.js";
 import { toBufferSource } from "./toBufferSource/index.js";
+import { normalizeToUint8Array } from "./0-HELPERS/index.js";
 
 export type ByteSource = Uint8Array | ArrayBuffer | ArrayBufferView | number[];
 
@@ -26,6 +27,7 @@ export {
   generateNonce,
   toBufferSource,
   equals,
+  normalizeToUint8Array,
 };
 
 /**
@@ -74,5 +76,8 @@ export class Bytes {
 
   static toBufferSource(bytes: ByteSource): BufferSource {
     return toBufferSource(bytes);
+  }
+  static toUint8Array(bytes: ByteSource): Uint8Array {
+    return normalizeToUint8Array(bytes);
   }
 }

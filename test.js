@@ -11,6 +11,7 @@ import {
   fromCompressed,
   concat,
   toBufferSource,
+  normalizeToUint8Array,
   generateNonce,
   equals,
   Bytes,
@@ -105,6 +106,35 @@ async function testBufferSource() {
   console.log("buffersource length:", view.byteLength);
 }
 
+async function testNormalizeToUint8Array() {
+  const source = Uint8Array.from([1, 2, 3, 4]);
+  const normalized = normalizeToUint8Array(source);
+  assert.strictEqual(normalized, source);
+
+  const fromBuffer = normalizeToUint8Array(source.buffer);
+  assert.ok(fromBuffer instanceof Uint8Array);
+  assert.strictEqual(fromBuffer.buffer, source.buffer);
+  assert.deepStrictEqual([...fromBuffer], [1, 2, 3, 4]);
+
+  const dataView = new DataView(source.buffer, 1, 2);
+  const fromView = normalizeToUint8Array(dataView);
+  assert.ok(fromView instanceof Uint8Array);
+  assert.deepStrictEqual([...fromView], [2, 3]);
+
+  const fromArray = normalizeToUint8Array([9, 8]);
+  assert.deepStrictEqual([...fromArray], [9, 8]);
+
+  assert.throws(() => normalizeToUint8Array("oops"), /Expected/);
+
+  const wrapper = Bytes.toUint8Array(source);
+  assert.strictEqual(wrapper, source);
+
+  const wrapperArray = Bytes.toUint8Array([7, 8]);
+  assert.deepStrictEqual([...wrapperArray], [7, 8]);
+
+  console.log("normalize length:", normalized.byteLength);
+}
+
 async function testEquals() {
   const left = Uint8Array.from([1, 2, 3, 4]);
   const same = new Uint8Array(left);
@@ -170,6 +200,7 @@ async function main() {
   await runTest("compression", testCompression);
   await runTest("concat", testConcat);
   await runTest("buffersource", testBufferSource);
+  await runTest("normalize", testNormalizeToUint8Array);
   await runTest("equals", testEquals);
   await runTest("nonce", testNonce);
   await runTest("bytes-wrapper", testBytesWrapper);
