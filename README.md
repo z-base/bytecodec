@@ -1,6 +1,6 @@
 # bytecodec
 
-Typed JavaScript byte utilities for base64url, UTF-8 strings, JSON, and BufferSource helpers that behave the same in browsers and Node.
+Typed JavaScript byte utilities for base64url, UTF-8 strings, and JSON that behave the same in browsers and Node.
 
 ## Highlights
 
