@@ -1,4 +1,5 @@
-import { normalizeToUint8Array } from "../0-HELPERS/index.js";
+import { toUint8Array } from "../index.js";
 export function toBufferSource(bytes) {
-    return normalizeToUint8Array(bytes);
+    return toUint8Array(bytes);
 }
+//# sourceMappingURL=index.js.map

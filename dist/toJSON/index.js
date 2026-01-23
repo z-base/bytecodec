@@ -1,3 +1,4 @@
+import { BytecodecError } from "../0-ERRORS/class.js";
 import { toString } from "../toString/index.js";
 export function toJSON(input) {
     const jsonString = typeof input === "string" ? input : toString(input);
@@ -6,6 +7,7 @@ export function toJSON(input) {
     }
     catch (error) {
         const message = error instanceof Error ? error.message : String(error);
-        throw new Error(`toJSON failed to parse value: ${message}`);
+        throw new BytecodecError("JSON_PARSE_FAILED", `toJSON failed to parse value: ${message}`);
     }
 }
+//# sourceMappingURL=index.js.map

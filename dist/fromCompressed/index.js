@@ -1,12 +1,14 @@
-import { normalizeToUint8Array, isNodeRuntime } from "../0-HELPERS/index.js";
+import { BytecodecError } from "../0-ERRORS/class.js";
+import { isNodeRuntime } from "../0-HELPERS/index.js";
+import { toUint8Array } from "../index.js";
 export async function fromCompressed(bytes) {
-    const view = normalizeToUint8Array(bytes);
+    const view = toUint8Array(bytes);
     if (isNodeRuntime()) {
         const { gunzipSync } = await import("node:zlib");
-        return normalizeToUint8Array(gunzipSync(view));
+        return toUint8Array(gunzipSync(view));
     }
     if (typeof DecompressionStream === "undefined")
-        throw new Error("gzip decompression not available in this environment.");
+        throw new BytecodecError("GZIP_DECOMPRESSION_UNAVAILABLE", "gzip decompression not available in this environment.");
     return decompressWithStream(view, "gzip");
 }
 async function decompressWithStream(bytes, format) {
@@ -17,3 +19,4 @@ async function decompressWithStream(bytes, format) {
     const arrayBuffer = await new Response(ds.readable).arrayBuffer();
     return new Uint8Array(arrayBuffer);
 }
+//# sourceMappingURL=index.js.map

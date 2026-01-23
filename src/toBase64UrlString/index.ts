@@ -1,10 +1,11 @@
+import { BytecodecError } from "../0-ERRORS/class.js";
 import type { ByteSource } from "../index.js";
-import { normalizeToUint8Array } from "../0-HELPERS/index.js";
+import { toUint8Array } from "../index.js";
 
 const chunkSize = 0x8000;
 
 export function toBase64UrlString(bytes: ByteSource): Base64URLString {
-  const view = normalizeToUint8Array(bytes);
+  const view = toUint8Array(bytes);
   const base64 = encodeBase64(view);
   return base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/g, "");
 }
@@ -23,6 +24,9 @@ function encodeBase64(bytes: Uint8Array): string {
     binaryString += chunkString;
   }
   if (typeof btoa !== "function")
-    throw new Error("No base64 encoder available in this environment.");
+    throw new BytecodecError(
+      "BASE64_ENCODER_UNAVAILABLE",
+      "No base64 encoder available in this environment.",
+    );
   return btoa(binaryString);
 }

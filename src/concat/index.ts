@@ -1,19 +1,23 @@
+import { BytecodecError } from "../0-ERRORS/class.js";
 import type { ByteSource } from "../index.js";
-import { normalizeToUint8Array } from "../0-HELPERS/index.js";
-
+import { toUint8Array } from "../index.js";
 export function concat(sources: ByteSource[]): Uint8Array {
   if (!Array.isArray(sources))
-    throw new TypeError("concat expects an array of ByteSource items");
+    throw new BytecodecError(
+      "CONCAT_INVALID_INPUT",
+      "concat expects an array of ByteSource items",
+    );
 
   if (sources.length === 0) return new Uint8Array(0);
 
   const arrays = sources.map((source, index) => {
     try {
-      return normalizeToUint8Array(source);
+      return toUint8Array(source);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
-      throw new TypeError(
-        `concat failed to normalize input at index ${index}: ${message}`
+      throw new BytecodecError(
+        "CONCAT_NORMALIZE_FAILED",
+        `concat failed to normalize input at index ${index}: ${message}`,
       );
     }
   });

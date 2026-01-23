@@ -1,23 +1,31 @@
+import { BytecodecError } from "../0-ERRORS/class.js";
 import type { ByteSource } from "../index.js";
-import { normalizeToUint8Array, isNodeRuntime } from "../0-HELPERS/index.js";
+import { isNodeRuntime } from "../0-HELPERS/index.js";
+import { toUint8Array } from "../index.js";
 
 export async function toCompressed(bytes: ByteSource): Promise<Uint8Array> {
-  const view = normalizeToUint8Array(bytes);
+  const view = toUint8Array(bytes);
 
   // Node: use built-in zlib
   if (isNodeRuntime()) {
     const { gzipSync } = await import("node:zlib");
-    return normalizeToUint8Array(gzipSync(view));
+    return toUint8Array(gzipSync(view));
   }
 
   // Browser/edge runtimes: CompressionStream with gzip
   if (typeof CompressionStream === "undefined")
-    throw new Error("gzip compression not available in this environment.");
+    throw new BytecodecError(
+      "GZIP_COMPRESSION_UNAVAILABLE",
+      "gzip compression not available in this environment.",
+    );
 
   return compressWithStream(view, "gzip");
 }
 
-async function compressWithStream(bytes: BufferSource, format: CompressionFormat) {
+async function compressWithStream(
+  bytes: BufferSource,
+  format: CompressionFormat,
+) {
   const cs = new CompressionStream(format);
   const writer = cs.writable.getWriter();
   await writer.write(bytes);

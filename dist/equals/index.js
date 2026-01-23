@@ -1,7 +1,7 @@
-import { normalizeToUint8Array } from "../0-HELPERS/index.js";
+import { toUint8Array } from "../index.js";
 export function equals(x, y) {
-    const a = normalizeToUint8Array(x);
-    const b = normalizeToUint8Array(y);
+    const a = toUint8Array(x);
+    const b = toUint8Array(y);
     if (a.byteLength !== b.byteLength)
         return false;
     let diff = 0;
@@ -9,3 +9,4 @@ export function equals(x, y) {
         diff |= a[index] ^ b[index];
     return diff === 0;
 }
+//# sourceMappingURL=index.js.map

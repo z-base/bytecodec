@@ -1,6 +1,6 @@
-import { normalizeToUint8Array } from "../0-HELPERS/index.js";
+import { toUint8Array } from "../index.js";
 import type { ByteSource } from "../index.js";
 
 export function toBufferSource(bytes: ByteSource): BufferSource {
-  return normalizeToUint8Array(bytes);
+  return toUint8Array(bytes);
 }

@@ -1,10 +1,12 @@
+import { BytecodecError } from "../0-ERRORS/class.js";
 import { textDecoder } from "../0-HELPERS/index.js";
-import { normalizeToUint8Array } from "../0-HELPERS/index.js";
+import { toUint8Array } from "../index.js";
 export function toString(bytes) {
-    const view = normalizeToUint8Array(bytes);
+    const view = toUint8Array(bytes);
     if (textDecoder)
         return textDecoder.decode(view);
     if (typeof Buffer !== "undefined" && typeof Buffer.from === "function")
         return Buffer.from(view).toString("utf8");
-    throw new Error("No UTF-8 decoder available in this environment.");
+    throw new BytecodecError("UTF8_DECODER_UNAVAILABLE", "No UTF-8 decoder available in this environment.");
 }
+//# sourceMappingURL=index.js.map

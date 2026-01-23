@@ -1,7 +1,7 @@
 {
   "name": "bytecodec",
-  "version": "2.1.0",
-  "description": "Zero-dependency byte toolkit for base64url, UTF-8 strings, JSON, ByteSource normalization, BufferSource helpers, CSP-ready nonces, gzip, and timing-safe equality in browser and Node runtimes.",
+  "version": "3.0.0",
+  "description": "JS/TS byte toolkit for base64url, UTF-8 strings, JSON, normalization, compression, concatenation, and comparison in browser and Node runtimes.",
   "keywords": [
     "base64url",
     "base64",
@@ -15,8 +15,6 @@
     "node",
     "utf8",
     "json",
-    "nonce",
-    "csp",
     "equals",
     "timing-safe",
     "compression",
@@ -49,16 +47,32 @@
     "README.md"
   ],
   "scripts": {
-    "test": "npm run build && node test.js && node benchmark/bench.js",
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node test/run-coverage.mjs && node test/e2e/run.mjs",
     "bench": "npm run build && node benchmark/bench.js",
-    "build": "tsc -p tsconfig.json"
+    "prepublishOnly": "npm run test && npm run bench"
+  },
+  "c8": {
+    "all": true,
+    "include": [
+      "dist/**/*.js"
+    ],
+    "exclude": [
+      "dist/**/*.d.ts",
+      "test/**",
+      "benchmark/**",
+      "playwright.config.ts"
+    ]
   },
   "sideEffects": false,
   "engines": {
     "node": ">=18"
   },
   "devDependencies": {
-    "@types/node": "^25.0.3",
+    "@playwright/test": "^1.58.0",
+    "@types/node": "^25.0.10",
+    "c8": "^10.1.3",
+    "playwright": "^1.58.0",
     "typescript": "^5.6.3"
   }
 }

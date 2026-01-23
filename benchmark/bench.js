@@ -1,16 +1,19 @@
 import { performance } from "node:perf_hooks";
 import { randomBytes } from "node:crypto";
 import {
-  toBase64UrlString,
-  fromBase64UrlString,
-  toString,
-  fromString,
-  toJSON,
-  fromJSON,
   concat,
-  normalizeToUint8Array,
   equals,
-  Bytes,
+  fromBase64UrlString,
+  fromCompressed,
+  fromJSON,
+  fromString,
+  toArrayBuffer,
+  toBase64UrlString,
+  toBufferSource,
+  toCompressed,
+  toJSON,
+  toString,
+  toUint8Array,
 } from "../dist/index.js";
 
 function formatOps(iterations, durationMs) {
@@ -41,21 +44,32 @@ const sampleBytesDiff = Uint8Array.from(sampleBytes, (value, idx) =>
 );
 const sampleView = new DataView(sampleBytes.buffer, 0, sampleBytes.byteLength);
 const sampleText = "caffeinated rockets at dawn";
+const sampleTextBytes = fromString(sampleText);
 const sampleJson = { ok: true, count: 42, note: "bytecodec" };
+const sampleJsonBytes = fromJSON(sampleJson);
 const base64 = toBase64UrlString(sampleBytes);
+const compressed = await toCompressed(sampleBytes);
 
 bench("base64 encode", 50000, () => toBase64UrlString(sampleBytes));
 bench("base64 decode", 50000, () => fromBase64UrlString(base64));
-bench("utf8 roundtrip", 50000, () => toString(fromString(sampleText)));
-bench("json roundtrip", 20000, () => toJSON(fromJSON(sampleJson)));
-bench("concat 3 buffers", 50000, () => concat([sampleBytes, sampleBytes, sampleBytes]));
-bench("normalize view", 200000, () => normalizeToUint8Array(sampleView));
+bench("utf8 encode", 50000, () => fromString(sampleText));
+bench("utf8 decode", 50000, () => toString(sampleTextBytes));
+bench("json encode", 20000, () => fromJSON(sampleJson));
+bench("json decode", 20000, () => toJSON(sampleJsonBytes));
+bench("concat 3 buffers", 50000, () =>
+  concat([sampleBytes, sampleBytes, sampleBytes]),
+);
+bench("toUint8Array", 200000, () => toUint8Array(sampleView));
+bench("toArrayBuffer", 200000, () => toArrayBuffer(sampleView));
+bench("toBufferSource", 200000, () => toBufferSource(sampleView));
 bench("equals same", 200000, () => equals(sampleBytes, sampleBytes));
 bench("equals diff", 200000, () => equals(sampleBytes, sampleBytesDiff));
 
-await benchAsync("gzip roundtrip", 400, async () => {
-  const compressed = await Bytes.toCompressed(sampleBytes);
-  await Bytes.fromCompressed(compressed);
+await benchAsync("gzip compress", 400, async () => {
+  await toCompressed(sampleBytes);
+});
+await benchAsync("gzip decompress", 400, async () => {
+  await fromCompressed(compressed);
 });
 
 console.log("Benchmark complete.");

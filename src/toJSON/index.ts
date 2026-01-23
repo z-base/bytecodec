@@ -1,3 +1,4 @@
+import { BytecodecError } from "../0-ERRORS/class.js";
 import type { ByteSource } from "../index.js";
 import { toString } from "../toString/index.js";
 
@@ -7,6 +8,9 @@ export function toJSON(input: ByteSource | string): any {
     return JSON.parse(jsonString);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    throw new Error(`toJSON failed to parse value: ${message}`);
+    throw new BytecodecError(
+      "JSON_PARSE_FAILED",
+      `toJSON failed to parse value: ${message}`,
+    );
   }
 }

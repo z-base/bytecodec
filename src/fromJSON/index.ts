@@ -1,3 +1,4 @@
+import { BytecodecError } from "../0-ERRORS/class.js";
 import { fromString } from "../fromString/index.js";
 
 export function fromJSON(value: any): Uint8Array {
@@ -5,6 +6,9 @@ export function fromJSON(value: any): Uint8Array {
     return fromString(JSON.stringify(value));
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
-    throw new Error(`fromJSON failed to stringify value: ${message}`);
+    throw new BytecodecError(
+      "JSON_STRINGIFY_FAILED",
+      `fromJSON failed to stringify value: ${message}`,
+    );
   }
 }
