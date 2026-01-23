@@ -33,12 +33,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jortsupetterson/bytecodec.git"
+    "url": "git+https://github.com/z-base/bytecodec.git"
   },
   "bugs": {
-    "url": "https://github.com/jortsupetterson/bytecodec/issues"
+    "url": "https://github.com/z-base/bytecodec/issues"
   },
-  "homepage": "https://github.com/jortsupetterson/bytecodec#readme",
+  "homepage": "https://github.com/z-base/bytecodec#readme",
   "files": [
     "dist",
     "LICENSE",
