@@ -18,7 +18,8 @@
     "equals",
     "compression",
     "gzip",
-    "binary"
+    "binary",
+        "z-base"
   ],
   "license": "MIT",
   "type": "module",
