@@ -19,6 +19,7 @@
     "compression",
     "gzip",
     "binary",
+    "typescript",
     "z-base"
   ],
   "license": "MIT",
