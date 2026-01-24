@@ -1,19 +1,23 @@
 # bytecodec
 
-Typed JavaScript byte utilities for base64url, UTF-8 strings, and JSON that behave the same in browsers and Node.
+Typed JavaScript byte utilities for base64url, UTF-8 strings, JSON, and gzip that behave the same in browsers and Node. Built to make JavaScript/TypeScript projects with lots of byte-format data a breeze to build, without having to write your own utilities or boilerplate.
 
-## Highlights
+## Compatibility
 
-- URL-safe base64 without padding; no external deps or bundler shims.
-- UTF-8 encode/decode for `Uint8Array`, `ArrayBuffer`, `ArrayBufferView`, or `number[]`.
-- JSON helpers (JSON.stringify/parse + UTF-8) for payloads, tokens, and storage.
-- BufferSource helper that returns a Uint8Array copy for safe normalization.
-- Explicit ArrayBuffer/Uint8Array helpers that return copies for safety.
-- Built on ES2015 typed arrays (Uint8Array/ArrayBuffer), widely available since 2015 across modern browsers; Node >=18 supported.
-- `equals()` for any supported byte input.
-- ESM-only, tree-shakeable, bundled TypeScript definitions, side-effect free.
+- Runtimes: Node >= 18; Browsers: modern browsers with TextEncoder/TextDecoder + btoa/atob; Workers/Edge: runtimes with TextEncoder/TextDecoder + btoa/atob (gzip needs CompressionStream/DecompressionStream).
+- Module format: ESM-only (no CJS build).
+- Required globals / APIs: Node `Buffer` (base64/UTF-8 fallback); browser/edge `TextEncoder`, `TextDecoder`, `btoa`, `atob`; gzip in browser/edge needs `CompressionStream`/`DecompressionStream`.
+- TypeScript: bundled types.
 
-## Install
+## Goals
+
+- Developer-friendly API for base64url, UTF-8, JSON, gzip, concat, and equality.
+- No dependencies or bundler shims.
+- ESM-only and side-effect free for tree-shaking.
+- Returns copies for safety when normalizing inputs.
+- Consistent behavior across Node, browsers, and edge runtimes.
+
+## Installation
 
 ```sh
 npm install bytecodec
@@ -23,115 +27,109 @@ pnpm add bytecodec
 yarn add bytecodec
 ```
 
-## Quick start
+## Usage
+
+### Bytes wrapper
 
 ```js
-import {
-  toBase64UrlString,
-  fromBase64UrlString,
-  fromString,
-  toString,
-  toJSON, // bytes/string -> value
-  fromJSON, // value -> bytes
-  toCompressed, // gzip: bytes -> bytes (Promise)
-  fromCompressed, // gzip: bytes -> bytes (Promise)
-  concat, // join multiple byte sources
-  toBufferSource, // ByteSource -> BufferSource (Uint8Array copy)
-  toArrayBuffer, // ByteSource -> ArrayBuffer copy
-  toUint8Array, // ByteSource -> Uint8Array copy
-  equals, // constant-time compare for any ByteSource
-  Bytes, // optional class wrapper
-} from "bytecodec";
+import { Bytes } from "bytecodec";
+// The `Bytes` convenience class wraps the same functions as static methods.
+const encoded = Bytes.toBase64UrlString(new Uint8Array([1, 2, 3]));
+```
 
-// Base64URL
-const payload = new Uint8Array([104, 101, 108, 108, 111]); // "hello"
-const encoded = toBase64UrlString(payload); // aGVsbG8
-const decoded = fromBase64UrlString(encoded); // Uint8Array [104, 101, 108, 108, 111]
+### Base64URL
 
-// UTF-8 strings
-const textBytes = fromString("caffe and rockets"); // Uint8Array
-const text = toString(textBytes); // "caffe and rockets"
+```js
+import { toBase64UrlString, fromBase64UrlString } from "bytecodec";
 
-// JSON
-const jsonBytes = fromJSON({ ok: true, count: 3 }); // Uint8Array
-const obj = toJSON(jsonBytes); // { ok: true, count: 3 }
-const objFromString = toJSON('{"ok":true,"count":3}'); // also works with a JSON string
+const bytes = new Uint8Array([104, 101, 108, 108, 111]);
+const encoded = toBase64UrlString(bytes);
+const decoded = fromBase64UrlString(encoded);
+```
 
-// Gzip (bytes in/out)
-const compressed = await toCompressed(textBytes);
+### UTF-8 strings
+
+```js
+import { fromString, toString } from "bytecodec";
+
+const textBytes = fromString("caffe and rockets");
+const text = toString(textBytes);
+```
+
+### JSON
+
+```js
+import { fromJSON, toJSON } from "bytecodec";
+
+const jsonBytes = fromJSON({ ok: true, count: 3 });
+const obj = toJSON(jsonBytes);
+```
+
+### Compression
+
+```js
+import { toCompressed, fromCompressed } from "bytecodec";
+
+const compressed = await toCompressed(new Uint8Array([1, 2, 3]));
 const restored = await fromCompressed(compressed);
-
-// Concatenate
-const joined = concat([textBytes, [33, 34]]); // Uint8Array [..textBytes, 33, 34]
-
-// BufferSource (Uint8Array copy)
-const view = payload.subarray(1, 4);
-const bufferSource = toBufferSource(view); // Uint8Array copy
-
-// Normalize to Uint8Array (copy)
-const normalized = toUint8Array([1, 2, 3]); // Uint8Array [1, 2, 3]
-
-// Copy to ArrayBuffer
-const copied = toArrayBuffer(view); // ArrayBuffer with bytes 101, 108, 108
-
-// Constant-time compare
-const isSame = equals(joined, concat([textBytes, [33, 34]])); // true
-
-// Wrapper mirrors the same methods (value -> bytes via fromJSON, bytes -> value via toJSON)
-Bytes.toBase64UrlString(payload);
-Bytes.fromBase64UrlString(encoded);
-Bytes.fromString("text");
-Bytes.toString(textBytes);
-Bytes.fromJSON({ ok: true });
-Bytes.toJSON(jsonBytes); // or Bytes.toJSON('{"ok":true}')
-await Bytes.toCompressed(payload);
-await Bytes.fromCompressed(compressed);
-Bytes.concat([payload, [1, 2, 3]]);
-Bytes.toBufferSource(payload);
-Bytes.toUint8Array(payload);
-Bytes.toArrayBuffer(payload);
-Bytes.equals(payload, Uint8Array.from(payload));
 ```
 
-## API snapshot
+### Normalization
 
-- `toBase64UrlString(bytes: ByteSource): Base64URLString` - RFC 4648 base64url encoding (no padding).
-- `fromBase64UrlString(base64UrlString: Base64URLString): Uint8Array` - decode with length validation.
-- `fromString(text: string): Uint8Array` - UTF-8 encode.
-- `toString(bytes: ByteSource): string` - UTF-8 decode.
-- `toJSON(input: ByteSource | string): any` - UTF-8 decode + `JSON.parse` (bytes or JSON string -> value).
-- `fromJSON(value: any): Uint8Array` - `JSON.stringify` + UTF-8 encode (value -> bytes).
-- `toCompressed(bytes: ByteSource): Promise<Uint8Array>` - gzip compress bytes (Node zlib or browser CompressionStream).
-- `fromCompressed(bytes: ByteSource): Promise<Uint8Array>` - gzip decompress bytes (Node zlib or browser DecompressionStream).
-- `concat(sources: ByteSource[]): Uint8Array` - normalize and join multiple byte sources into one Uint8Array.
-- `toBufferSource(bytes: ByteSource): BufferSource` - normalize to Uint8Array typed as BufferSource.
-- `toArrayBuffer(bytes: ByteSource): ArrayBuffer` - normalize to ArrayBuffer copy.
-- `toUint8Array(bytes: ByteSource): Uint8Array` - normalize to a Uint8Array copy.
-- `equals(a: ByteSource, b: ByteSource): boolean` - equality check for any supported byte inputs.
-- `Bytes` - class wrapper exposing the same static methods above.
+```js
+import { toUint8Array, toArrayBuffer, toBufferSource } from "bytecodec";
 
-### Types
-
-```ts
-type ByteSource = Uint8Array | ArrayBuffer | ArrayBufferView | number[];
+const normalized = toUint8Array([1, 2, 3]);
+const copied = toArrayBuffer(normalized);
+const bufferSource = toBufferSource(normalized);
 ```
 
-`Base64URLString` and `BufferSource` are built-in DOM types in TypeScript.
+### Equality
+
+```js
+import { equals } from "bytecodec";
+
+const isSame = equals(new Uint8Array([1, 2, 3]), new Uint8Array([1, 2, 3]));
+```
+
+### Concatenating
+
+```js
+import { concat } from "bytecodec";
+
+const joined = concat([new Uint8Array([1, 2]), new Uint8Array([3, 4]), [5, 6]]);
+```
 
 ## Runtime behavior
 
-- Node: uses `Buffer.from` for base64; UTF-8 uses `TextEncoder`/`TextDecoder` when available, with `Buffer` fallback.
-- Browsers/edge runtimes: uses `TextEncoder`/`TextDecoder` and `btoa`/`atob`.
-- Throws clear errors when the host cannot encode/decode.
+### Node
 
-## Testing
+Uses `Buffer.from` for base64 and `TextEncoder`/`TextDecoder` when available, with `Buffer` fallback; gzip uses `node:zlib`.
 
-Tests currently pass with 100% c8 coverage in Node. Browser E2E runs across
-Chromium, Firefox, WebKit, plus mobile emulation (Pixel 5, iPhone 12).
+### Browsers / Edge runtimes
+
+Uses `TextEncoder`/`TextDecoder` and `btoa`/`atob`. Gzip uses `CompressionStream`/`DecompressionStream` when available.
+
+### Validation & errors
+
+Validation failures throw `BytecodecError` with a `code` string (for example `BASE64URL_INVALID_LENGTH`, `UTF8_DECODER_UNAVAILABLE`, `GZIP_COMPRESSION_UNAVAILABLE`), while underlying runtime errors may bubble through.
+
+### Safety / copying semantics
+
+Normalization helpers return copies (`Uint8Array`/`ArrayBuffer`) to avoid mutating caller-owned buffers.
+
+## Tests
+
+Suite: unit + integration (Node), E2E (Playwright)
+Matrix: Chromium / Firefox / WebKit + mobile emulation (Pixel 5, iPhone 12)
+Coverage: c8 — 100% statements/branches/functions/lines (Node)
+Notes: no known skips
 
 ## Benchmarks
 
-`node benchmark/bench.js` on Node v22.14.0 (win32 x64). Results vary by machine.
+How it was run: `node benchmark/bench.js`
+Environment: Node v22.14.0 (win32 x64)
+Results:
 
 | Benchmark        | Result                     |
 | ---------------- | -------------------------- |
@@ -149,6 +147,8 @@ Chromium, Firefox, WebKit, plus mobile emulation (Pixel 5, iPhone 12).
 | equals diff      | 2,760,784 ops/s (72.4 ms)  |
 | gzip compress    | 10,275 ops/s (38.9 ms)     |
 | gzip decompress  | 18,615 ops/s (21.5 ms)     |
+
+Results vary by machine.
 
 ## License
 

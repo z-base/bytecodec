@@ -1,6 +1,6 @@
 {
   "name": "bytecodec",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "JS/TS byte toolkit for base64url, UTF-8 strings, JSON, normalization, compression, concatenation, and comparison in browser and Node runtimes.",
   "keywords": [
     "base64url",
@@ -19,7 +19,7 @@
     "compression",
     "gzip",
     "binary",
-        "z-base"
+    "z-base"
   ],
   "license": "MIT",
   "type": "module",

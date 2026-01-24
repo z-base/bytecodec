@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.1 - 2026-01-24
+
+- Updated documentation formatting and usage examples.
+
 ## 3.0.0 - 2026-01-23
 
 - Added comprehensive Node unit/integration tests with enforced 100% c8 coverage.
