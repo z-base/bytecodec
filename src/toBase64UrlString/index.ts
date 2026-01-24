@@ -1,4 +1,4 @@
-import { BytecodecError } from "../0-ERRORS/class.js";
+import { BytecodecError } from "../.errors/class.js";
 import type { ByteSource } from "../index.js";
 import { toUint8Array } from "../index.js";
 
@@ -30,3 +30,4 @@ function encodeBase64(bytes: Uint8Array): string {
     );
   return btoa(binaryString);
 }
+

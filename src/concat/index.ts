@@ -1,4 +1,4 @@
-import { BytecodecError } from "../0-ERRORS/class.js";
+import { BytecodecError } from "../.errors/class.js";
 import type { ByteSource } from "../index.js";
 import { toUint8Array } from "../index.js";
 export function concat(sources: ByteSource[]): Uint8Array {
@@ -34,3 +34,4 @@ export function concat(sources: ByteSource[]): Uint8Array {
 
   return result;
 }
+

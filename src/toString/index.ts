@@ -1,5 +1,5 @@
-import { BytecodecError } from "../0-ERRORS/class.js";
-import { textDecoder } from "../0-HELPERS/index.js";
+import { BytecodecError } from "../.errors/class.js";
+import { textDecoder } from "../.helpers/index.js";
 import { toUint8Array } from "../index.js";
 import type { ByteSource } from "../index.js";
 
@@ -16,3 +16,4 @@ export function toString(bytes: ByteSource): string {
     "No UTF-8 decoder available in this environment.",
   );
 }
+

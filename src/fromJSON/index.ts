@@ -1,4 +1,4 @@
-import { BytecodecError } from "../0-ERRORS/class.js";
+import { BytecodecError } from "../.errors/class.js";
 import { fromString } from "../fromString/index.js";
 
 export function fromJSON(value: any): Uint8Array {
@@ -12,3 +12,4 @@ export function fromJSON(value: any): Uint8Array {
     );
   }
 }
+

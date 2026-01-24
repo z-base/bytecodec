@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { BytecodecError } from "../../dist/0-ERRORS/class.js";
+import { BytecodecError } from "../../dist/.errors/class.js";
 
 test("BytecodecError uses code when message is omitted", () => {
   const err = new BytecodecError("UTF8_ENCODER_UNAVAILABLE");

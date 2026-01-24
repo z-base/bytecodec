@@ -1,5 +1,5 @@
-import { BytecodecError } from "../0-ERRORS/class.js";
-import { isSharedArrayBuffer } from "../0-HELPERS/index.js";
+import { BytecodecError } from "../.errors/class.js";
+import { isSharedArrayBuffer } from "../.helpers/index.js";
 import type { ByteSource } from "../index.js";
 
 export function toArrayBuffer(bytes: ByteSource): ArrayBuffer {
@@ -23,3 +23,4 @@ export function toArrayBuffer(bytes: ByteSource): ArrayBuffer {
     "Expected a Uint8Array, ArrayBuffer, ArrayBufferView, or number[]",
   );
 }
+

@@ -1,4 +1,4 @@
-import { BytecodecError } from "../0-ERRORS/class.js";
+import { BytecodecError } from "../.errors/class.js";
 
 export function fromBase64UrlString(
   base64UrlString: Base64URLString,
@@ -39,3 +39,4 @@ function decodeBase64(base64String: string): Uint8Array {
     bytes[index] = binaryString.charCodeAt(index);
   return bytes;
 }
+

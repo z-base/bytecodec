@@ -1,5 +1,5 @@
-import { BytecodecError } from "../0-ERRORS/class.js";
-import { isNodeRuntime } from "../0-HELPERS/index.js";
+import { BytecodecError } from "../.errors/class.js";
+import { isNodeRuntime } from "../.helpers/index.js";
 import { toUint8Array } from "../index.js";
 import type { ByteSource } from "../index.js";
 
@@ -31,3 +31,4 @@ async function decompressWithStream(
   const arrayBuffer = await new Response(ds.readable).arrayBuffer();
   return new Uint8Array(arrayBuffer);
 }
+

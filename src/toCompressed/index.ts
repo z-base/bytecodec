@@ -1,6 +1,6 @@
-import { BytecodecError } from "../0-ERRORS/class.js";
+import { BytecodecError } from "../.errors/class.js";
 import type { ByteSource } from "../index.js";
-import { isNodeRuntime } from "../0-HELPERS/index.js";
+import { isNodeRuntime } from "../.helpers/index.js";
 import { toUint8Array } from "../index.js";
 
 export async function toCompressed(bytes: ByteSource): Promise<Uint8Array> {
@@ -33,3 +33,4 @@ async function compressWithStream(
   const arrayBuffer = await new Response(cs.readable).arrayBuffer();
   return new Uint8Array(arrayBuffer);
 }
+

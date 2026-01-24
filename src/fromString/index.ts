@@ -1,5 +1,5 @@
-import { BytecodecError } from "../0-ERRORS/class.js";
-import { textEncoder } from "../0-HELPERS/index.js";
+import { BytecodecError } from "../.errors/class.js";
+import { textEncoder } from "../.helpers/index.js";
 
 export function fromString(text: string): Uint8Array {
   if (typeof text !== "string")
@@ -18,3 +18,4 @@ export function fromString(text: string): Uint8Array {
     "No UTF-8 encoder available in this environment.",
   );
 }
+

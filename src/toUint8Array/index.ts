@@ -1,4 +1,4 @@
-import { BytecodecError } from "../0-ERRORS/class.js";
+import { BytecodecError } from "../.errors/class.js";
 import type { ByteSource } from "../index.js";
 
 export function toUint8Array(input: ByteSource): Uint8Array<ArrayBuffer> {
@@ -18,3 +18,4 @@ export function toUint8Array(input: ByteSource): Uint8Array<ArrayBuffer> {
     "Expected a Uint8Array, ArrayBuffer, ArrayBufferView, or number[]",
   );
 }
+

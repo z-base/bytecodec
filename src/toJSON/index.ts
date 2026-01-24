@@ -1,4 +1,4 @@
-import { BytecodecError } from "../0-ERRORS/class.js";
+import { BytecodecError } from "../.errors/class.js";
 import type { ByteSource } from "../index.js";
 import { toString } from "../toString/index.js";
 
@@ -14,3 +14,4 @@ export function toJSON(input: ByteSource | string): any {
     );
   }
 }
+
