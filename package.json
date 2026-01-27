@@ -1,6 +1,6 @@
 {
   "name": "@z-base/bytecodec",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "JS/TS byte toolkit for base64url, UTF-8 strings, JSON, normalization, compression, concatenation, and comparison in browser and Node runtimes.",
   "keywords": [
     "base64url",
