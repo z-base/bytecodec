@@ -1,3 +1,7 @@
+[![CI](https://github.com/z-base/bytecodec/actions/workflows/ci.yaml/badge.svg?branch=master)](https://github.com/z-base/bytecodec/actions/workflows/ci.yaml)
+[![npm version](https://img.shields.io/npm/v/bytecodec)](https://www.npmjs.com/package/bytecodec)
+[![license](https://img.shields.io/npm/l/bytecodec)](LICENSE)
+
 # bytecodec
 
 Typed JavaScript byte utilities for base64url, UTF-8 strings, JSON, and gzip that behave the same in browsers and Node. Built to make JavaScript/TypeScript projects with lots of byte-format data a breeze to build, without having to write your own utilities or boilerplate.
