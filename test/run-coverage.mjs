@@ -1,6 +1,7 @@
 import { rmSync } from "node:fs";
 import { resolve } from "node:path";
 import { spawnSync } from "node:child_process";
+import fg from "fast-glob";
 
 const coverageDir = resolve(process.cwd(), ".c8");
 rmSync(coverageDir, { recursive: true, force: true });
@@ -15,16 +16,11 @@ function run(command, args, envOverride = env) {
   if (result.status !== 0) process.exit(result.status ?? 1);
 }
 
-run(process.execPath, [
-  "--test",
-  "--test-concurrency=1",
-  "test/unit/**/*.test.js",
-]);
-run(process.execPath, [
-  "--test",
-  "--test-concurrency=1",
-  "test/integration/**/*.test.js",
-]);
+const unitTests = fg.sync("test/unit/**/*.test.js");
+const integrationTests = fg.sync("test/integration/**/*.test.js");
+
+run(process.execPath, ["--test", "--test-concurrency=1", ...unitTests]);
+run(process.execPath, ["--test", "--test-concurrency=1", ...integrationTests]);
 
 const c8Bin = resolve(
   process.cwd(),
