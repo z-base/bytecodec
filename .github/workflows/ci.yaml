@@ -78,4 +78,6 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run build --if-present
+      - name: Confirm npm auth
+        run: npm whoami
       - run: npm publish --provenance --access public --ignore-scripts
