@@ -47,7 +47,7 @@
     "README.md"
   ],
   "scripts": {
-    "format": "prettier . --write --check",
+    "format": "prettier . --write",
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && node test/run-coverage.mjs && node test/e2e/run.mjs",
     "bench": "npm run build && node benchmark/bench.js",
