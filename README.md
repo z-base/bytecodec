@@ -25,11 +25,11 @@ Typed JavaScript byte utilities for base64url, UTF-8 strings, JSON, and gzip tha
 ## Installation
 
 ```sh
-npm install bytecodec
+npm install @z-base/bytecodec
 # or
-pnpm add bytecodec
+pnpm add @z-base/bytecodec
 # or
-yarn add bytecodec
+yarn add @z-base/bytecodec
 ```
 
 ## Usage
@@ -37,72 +37,72 @@ yarn add bytecodec
 ### Bytes wrapper
 
 ```js
-import { Bytes } from "bytecodec";
+import { Bytes } from '@z-base/bytecodec'
 // The `Bytes` convenience class wraps the same functions as static methods.
-const encoded = Bytes.toBase64UrlString(new Uint8Array([1, 2, 3]));
+const encoded = Bytes.toBase64UrlString(new Uint8Array([1, 2, 3]))
 ```
 
 ### Base64URL
 
 ```js
-import { toBase64UrlString, fromBase64UrlString } from "bytecodec";
+import { toBase64UrlString, fromBase64UrlString } from '@z-base/bytecodec'
 
-const bytes = new Uint8Array([104, 101, 108, 108, 111]);
-const encoded = toBase64UrlString(bytes); // string of base64url chars
-const decoded = fromBase64UrlString(encoded); // Uint8Array
+const bytes = new Uint8Array([104, 101, 108, 108, 111])
+const encoded = toBase64UrlString(bytes) // string of base64url chars
+const decoded = fromBase64UrlString(encoded) // Uint8Array
 ```
 
 ### UTF-8 strings
 
 ```js
-import { fromString, toString } from "bytecodec";
+import { fromString, toString } from '@z-base/bytecodec'
 
-const textBytes = fromString("caffe and rockets"); // Uint8Array
-const text = toString(textBytes); // "caffe and rockets"
+const textBytes = fromString('caffe and rockets') // Uint8Array
+const text = toString(textBytes) // "caffe and rockets"
 ```
 
 ### JSON
 
 ```js
-import { fromJSON, toJSON } from "bytecodec";
+import { fromJSON, toJSON } from '@z-base/bytecodec'
 
-const jsonBytes = fromJSON({ ok: true, count: 3 }); // Uint8Array
-const obj = toJSON(jsonBytes); // { ok: true, count: 3 }
+const jsonBytes = fromJSON({ ok: true, count: 3 }) // Uint8Array
+const obj = toJSON(jsonBytes) // { ok: true, count: 3 }
 ```
 
 ### Compression
 
 ```js
-import { toCompressed, fromCompressed } from "bytecodec";
+import { toCompressed, fromCompressed } from '@z-base/bytecodec'
 
-const compressed = await toCompressed(new Uint8Array([1, 2, 3])); // Uint8Array
-const restored = await fromCompressed(compressed); // Uint8Array
+const compressed = await toCompressed(new Uint8Array([1, 2, 3])) // Uint8Array
+const restored = await fromCompressed(compressed) // Uint8Array
 ```
 
 ### Normalization
 
 ```js
-import { toUint8Array, toArrayBuffer, toBufferSource } from "bytecodec";
+import { toUint8Array, toArrayBuffer, toBufferSource } from '@z-base/bytecodec'
 
-const normalized = toUint8Array([1, 2, 3]); // Uint8Array
-const copied = toArrayBuffer(normalized); // ArrayBuffer
-const bufferSource = toBufferSource(normalized); // Uint8Array as BufferSource
+const normalized = toUint8Array([1, 2, 3]) // Uint8Array
+const copied = toArrayBuffer(normalized) // ArrayBuffer
+const bufferSource = toBufferSource(normalized) // Uint8Array as BufferSource
 ```
 
 ### Equality
 
 ```js
-import { equals } from "bytecodec";
+import { equals } from '@z-base/bytecodec'
 
-const isSame = equals(new Uint8Array([1, 2, 3]), new Uint8Array([1, 2, 3])); // true | false
+const isSame = equals(new Uint8Array([1, 2, 3]), new Uint8Array([1, 2, 3])) // true | false
 ```
 
 ### Concatenating
 
 ```js
-import { concat } from "bytecodec";
+import { concat } from '@z-base/bytecodec'
 
-const joined = concat([new Uint8Array([1, 2]), new Uint8Array([3, 4]), [5, 6]]); // Uint8Array
+const joined = concat([new Uint8Array([1, 2]), new Uint8Array([3, 4]), [5, 6]]) // Uint8Array
 ```
 
 ## Runtime behavior

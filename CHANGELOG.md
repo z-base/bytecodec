@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.0.0 - 2026-01-27
+## 1.0.0 - 2026-01-27
 
 - Package name change from `bytecodec` to `@z-base/bytecodec`.
 - Added GitHub Actions CI/CD.
