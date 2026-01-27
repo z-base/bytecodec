@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/z-base/bytecodec/compare/v1.0.0...v1.0.1) (2026-01-27)
+
+
+### Bug Fixes
+
+* trigger release ([22d8b5e](https://github.com/z-base/bytecodec/commit/22d8b5e092f2b5640d7334c15cd0789b83118897))
+
 ## 1.0.0 (2026-01-27)
 
 ### Bug Fixes
