@@ -5,6 +5,7 @@
 - Package name change from `bytecodec` to `@z-base/bytecodec`.
 - Added GitHub Actions CI/CD.
 - Made documentation a bit richer.
+- Added linting and formatting scripts.
 
 ## 3.0.1 - 2026-01-24
 
