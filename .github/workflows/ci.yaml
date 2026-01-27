@@ -42,3 +42,37 @@ jobs:
         run: |
           npm run format
           git diff --exit-code
+
+  release-please:
+    if: github.event_name == 'push'
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+    steps:
+      - id: release
+        uses: googleapis/release-please-action@v3
+        with:
+          release-type: node
+          package-name: '@z-base/bytecodec'
+
+  publish:
+    if: needs.release-please.outputs.release_created == 'true'
+    needs: release-please
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          registry-url: https://registry.npmjs.org
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+      - run: npm publish --provenance --access public --ignore-scripts
