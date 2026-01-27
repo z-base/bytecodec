@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.4](https://github.com/z-base/bytecodec/compare/v1.0.3...v1.0.4) (2026-01-27)
+
+
+### Bug Fixes
+
+* npm publish automation ([2eee989](https://github.com/z-base/bytecodec/commit/2eee9895c88eeabe978489862e51a29a22f1e92b))
+* npm publish automation ([25eed87](https://github.com/z-base/bytecodec/commit/25eed87f9410616dc0b5b35df3e36b0f98a32e81))
+
 ## [1.0.3](https://github.com/z-base/bytecodec/compare/v1.0.2...v1.0.3) (2026-01-27)
 
 
