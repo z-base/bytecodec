@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
@@ -71,13 +71,16 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22.x
           registry-url: https://registry.npmjs.org
-          cache: 'npm'
+          cache: npm
+
       - run: npm ci
       - run: npm run build --if-present
-      - name: Confirm npm auth
-        run: npm whoami
-      - run: npm publish --provenance --access public --ignore-scripts
+
+      - run: |
+          unset NODE_AUTH_TOKEN
+          npm publish --provenance --access public --ignore-scripts
