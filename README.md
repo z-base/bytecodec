@@ -1,7 +1,7 @@
 [![CI](https://github.com/z-base/bytecodec/actions/workflows/ci.yaml/badge.svg?branch=master)](https://github.com/z-base/bytecodec/actions/workflows/ci.yaml)
 [![codecov](https://codecov.io/gh/z-base/bytecodec/branch/master/graph/badge.svg)](https://codecov.io/gh/z-base/bytecodec)
-[![npm version](https://img.shields.io/npm/v/bytecodec)](https://www.npmjs.com/package/bytecodec)
-[![license](https://img.shields.io/npm/l/bytecodec)](LICENSE)
+[![npm version](https://img.shields.io/npm/v/@z-base/bytecodec)](https://www.npmjs.com/package/bytecodec)
+[![license](https://img.shields.io/npm/l/@z-base/bytecodec)](LICENSE)
 
 # bytecodec
 
