@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.0 (2026-01-27)
+
+
+### Bug Fixes
+
+* configure release-please v4 ([cceaf1b](https://github.com/z-base/bytecodec/commit/cceaf1b573518298926d4240f3e95969033a5eb1))
+
 ## 1.0.0 - 2026-01-27
 
 - Package name change from `bytecodec` to `@z-base/bytecodec`.
