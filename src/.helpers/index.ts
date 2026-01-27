@@ -1,18 +1,18 @@
 export const textEncoder =
-  typeof TextEncoder !== "undefined" ? new TextEncoder() : null;
+  typeof TextEncoder !== 'undefined' ? new TextEncoder() : null
 
 export const textDecoder =
-  typeof TextDecoder !== "undefined" ? new TextDecoder() : null;
+  typeof TextDecoder !== 'undefined' ? new TextDecoder() : null
 
 export function isNodeRuntime(): boolean {
-  return typeof process !== "undefined" && !!process.versions?.node;
+  return typeof process !== 'undefined' && !!process.versions?.node
 }
 
 export function isSharedArrayBuffer(
-  buffer: ArrayBufferLike,
+  buffer: ArrayBufferLike
 ): buffer is SharedArrayBuffer {
   return (
-    typeof SharedArrayBuffer !== "undefined" &&
+    typeof SharedArrayBuffer !== 'undefined' &&
     buffer instanceof SharedArrayBuffer
-  );
+  )
 }

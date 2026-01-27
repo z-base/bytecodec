@@ -39,4 +39,6 @@ jobs:
           fail_ci_if_error: true
 
       - name: Check formatting
-        run: npm run format:check
+        run: |
+          npm run format
+          git diff --exit-code
