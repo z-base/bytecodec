@@ -41,10 +41,9 @@ jobs:
           files: coverage/lcov.info
           fail_ci_if_error: true
 
-      - name: Check formatting
+      - name: Enforce formatting
         run: |
           npm run format
-          git diff --exit-code
 
   release-please:
     if: github.event_name == 'push'

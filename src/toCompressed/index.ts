@@ -8,8 +8,11 @@ export async function toCompressed(bytes: ByteSource): Promise<Uint8Array> {
 
   // Node: use built-in zlib
   if (isNodeRuntime()) {
-    const { gzipSync } = await import('node:zlib')
-    return toUint8Array(gzipSync(view))
+    const { gzip } = await import('node:zlib')
+    const { promisify } = await import('node:util')
+    const gzipAsync = promisify(gzip)
+    const compressed = await gzipAsync(view)
+    return toUint8Array(compressed)
   }
 
   // Browser/edge runtimes: CompressionStream with gzip

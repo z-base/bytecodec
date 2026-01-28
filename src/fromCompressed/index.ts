@@ -7,8 +7,11 @@ export async function fromCompressed(bytes: ByteSource): Promise<Uint8Array> {
   const view = toUint8Array(bytes)
 
   if (isNodeRuntime()) {
-    const { gunzipSync } = await import('node:zlib')
-    return toUint8Array(gunzipSync(view))
+    const { gunzip } = await import('node:zlib')
+    const { promisify } = await import('node:util')
+    const gunzipAsync = promisify(gunzip)
+    const decompressed = await gunzipAsync(view)
+    return toUint8Array(decompressed)
   }
 
   if (typeof DecompressionStream === 'undefined')

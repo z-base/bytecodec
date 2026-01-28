@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.7](https://github.com/z-base/bytecodec/compare/v1.0.6...v1.0.7) (2026-01-27)
+
+
+### Bug Fixes
+
+* readme tags ordering ([dc98815](https://github.com/z-base/bytecodec/commit/dc988159b8454898bb396e95ffb57b0acde443a8))
+
 ## [1.0.6](https://github.com/z-base/bytecodec/compare/v1.0.5...v1.0.6) (2026-01-27)
 
 
