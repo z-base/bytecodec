@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/z-base/bytecodec/compare/v1.0.7...v1.1.0) (2026-01-28)
+
+
+### Features
+
+* Added non-blocking compress/decompress support for node runtimes (async zlib) ([9ec3b2e](https://github.com/z-base/bytecodec/commit/9ec3b2eaef4b2a9e8128e6d28caa3f3c9e605adf))
+
 ## [1.0.7](https://github.com/z-base/bytecodec/compare/v1.0.6...v1.0.7) (2026-01-27)
 
 
