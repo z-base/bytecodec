@@ -157,4 +157,4 @@ Results vary by machine.
 
 ## License
 
-MIT
+Apache-2.0

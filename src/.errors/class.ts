@@ -18,7 +18,7 @@ export class BytecodecError extends Error {
 
   constructor(code: BytecodecErrorCode, message?: string) {
     const detail = message ?? code
-    super(`{bytecodec} ${detail}`)
+    super(`{@z-base/bytecodec} ${detail}`)
     this.code = code
     this.name = 'BytecodecError'
   }
